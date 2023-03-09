@@ -7,7 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <style>
-       <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -17,16 +17,23 @@
     
   </style>
 </head>
-<h3 style="text-align:center">Please Enter Salary Amount:</h3>
+<h3 style="text-align:center">Confirm</h3>
 <form method="POST" autocomplete="off" style="margin:100px;margin-top: 0px;">
     {%csrf_token%}
     <div class="form-group">
-      <label for="salary">Salary (per month)</label>
-      {% render_field teacherSalary.salary class="form-control" placeholder="3660" %}
+      <label for="salary">Please Enter Password To Confirm</label>
+      {% render_field teacherSalary.salary class="form-control" placeholder="Password" type="password":input %}
     </div>
+
     
 
-    <button type="submit" class="btn btn-success" style="border-radius: 0%;">Approve</button>
+    <!-- <button type="submit" class="btn btn-success" style="border-radius: 0%; ">Approve</button> -->
+ 
+    <div style="text-align:center;">
+      <button type="submit" class="btn btn-success" style="border-radius: 0%;">Approve</button>
+    </div>
+    
+ 
   </form>
 <br><br><br>
 {% endblock content %}
