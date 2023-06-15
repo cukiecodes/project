@@ -9,7 +9,12 @@ from datetime import date, timedelta
 from exam import models as QMODEL
 from teacher import models as TMODEL
 
-
+#to validate user
+def validate_username(username):
+    pattern = r'^CHN\d{2}[A-Za-z]{2}\d{3}$'
+    if re.match(pattern, username):
+        return True
+    return False
 #for showing signup/login button for student
 def studentclick_view(request):
     if request.user.is_authenticated:
@@ -17,23 +22,27 @@ def studentclick_view(request):
     return render(request,'student/studentclick.html')
 
 def student_signup_view(request):
-    userForm=forms.StudentUserForm()
-    studentForm=forms.StudentForm()
-    mydict={'userForm':userForm,'studentForm':studentForm}
-    if request.method=='POST':
-        userForm=forms.StudentUserForm(request.POST)
-        studentForm=forms.StudentForm(request.POST,request.FILES)
+    userForm = forms.StudentUserForm()
+    studentForm = forms.StudentForm()
+    mydict = {'userForm': userForm, 'studentForm': studentForm, 'error_message': ''}
+    if request.method == 'POST':
+        userForm = forms.StudentUserForm(request.POST)
+        studentForm = forms.StudentForm(request.POST, request.FILES)
         if userForm.is_valid() and studentForm.is_valid():
-            user=userForm.save()
-            user.set_password(user.password)
-            user.save()
-            student=studentForm.save(commit=False)
-            student.user=user
-            student.save()
-            my_student_group = Group.objects.get_or_create(name='STUDENT')
-            my_student_group[0].user_set.add(user)
-        return HttpResponseRedirect('studentlogin')
-    return render(request,'student/studentsignup.html',context=mydict)
+            username = userForm.cleaned_data['username']
+            if not validate_username(username):
+                mydict['error_message'] = 'Invalid username. Please enter a valid username.'
+            else:
+                user = userForm.save()
+                user.set_password(user.password)
+                user.save()
+                student = studentForm.save(commit=False)
+                student.user = user
+                student.save()
+                my_student_group = Group.objects.get_or_create(name='STUDENT')
+                my_student_group[0].user_set.add(user)
+                return HttpResponseRedirect('studentlogin')
+    return render(request, 'student/studentsignup.html', context=mydict)
 
 def is_student(user):
     return user.groups.filter(name='STUDENT').exists()
