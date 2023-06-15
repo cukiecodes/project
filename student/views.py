@@ -8,6 +8,7 @@ from django.conf import settings
 from datetime import date, timedelta
 from exam import models as QMODEL
 from teacher import models as TMODEL
+import re
 
 #to validate user
 def validate_username(username):
