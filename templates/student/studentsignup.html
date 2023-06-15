@@ -9,6 +9,26 @@
            margin: 50px; 
           
         }
+      .error-dialog {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+  }
+
+  .error-dialog .error-message {
+    margin-bottom: 10px;
+  }
+
+  .error-dialog .close-button {
+    cursor: pointer;
+  }
 
     </style>
   </head>
@@ -55,6 +75,23 @@
           {% render_field userForm.password|attr:'required:true'  class="form-control" placeholder="password" %}
         </div>
       </div>
+  
+       <!---error box for invalid user-->
+      <div id="errorDialog" class="error-dialog">
+        <p id="errorMessage" class="error-message"></p>
+        <span id="closeButton" class="close-button">&times;</span>
+      </div>
+
+      {% if error_message %}
+      <script>
+        // JavaScript code to display the error dialog box
+        document.getElementById('errorMessage').textContent = "{{ error_message }}";
+        document.getElementById('errorDialog').style.display = 'block';
+        document.getElementById('closeButton').onclick = function () {
+          document.getElementById('errorDialog').style.display = 'none';
+        };
+      </script>
+      {% endif %}
 
       <div class="form-row">
         <div class="form-group col-md-12">
